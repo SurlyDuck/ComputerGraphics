@@ -15,7 +15,7 @@ uint8_t frame_buffer[BUFFER_WIDTH * BUFFER_HEIGHT] = {0};
 void dda(int x1, int y1, int x2, int y2, uint8_t intensity){
 	size_t dx = x2 - x1;
 	size_t dy = y2 - y1;
-	size_t steps = ((dx > dy) ? dx : dy) + 1;
+	size_t steps = ((dx > dy) ? dx : dy);
 	
 	float dx_step = (float)(dx) / (float)(steps);
 	float dy_step = (float)(dy) / (float)(steps);
@@ -58,7 +58,7 @@ void write_ppm(const char *path){
 }
 
 int main(){
-	dda(0, 0, 10, 200, 100);
+	dda(0, 0, 100, 100, 100);
 
 	write_ppm("./output.ppm");
 
