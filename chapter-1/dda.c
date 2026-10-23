@@ -3,6 +3,7 @@
 // Pages 12-13
 
 #include <stdint.h>
+#include <unistd.h>
 #include <stddef.h>
 #include <assert.h>
 #include <stdio.h>
@@ -13,9 +14,10 @@
 uint8_t frame_buffer[BUFFER_WIDTH * BUFFER_HEIGHT] = {0};
 
 void dda(int x1, int y1, int x2, int y2, uint8_t intensity){
-	size_t dx = x2 - x1;
-	size_t dy = y2 - y1;
-	size_t steps = ((dx > dy) ? dx : dy);
+	ssize_t dx = x2 - x1;
+	ssize_t dy = y2 - y1;
+	size_t steps = (dx > dy) ? dx : dy;
+	if (!steps) steps = 1;
 	
 	float dx_step = (float)(dx) / (float)(steps);
 	float dy_step = (float)(dy) / (float)(steps);
@@ -23,13 +25,13 @@ void dda(int x1, int y1, int x2, int y2, uint8_t intensity){
 	float x = x1; 
 	float y = y1; 
 	for(size_t u = 1; u < steps; ++u){
-		frame_buffer[(int)(BUFFER_WIDTH * y + x)] = intensity;
+		frame_buffer[(int)(BUFFER_WIDTH * (int)(y) + x)] = intensity;
 
 		x += dx_step;
 		y += dy_step;
 	} 
 
-	frame_buffer[(int)(BUFFER_WIDTH * y + x)] = intensity;
+	frame_buffer[(int)(BUFFER_WIDTH * (int)(y) + x)] = intensity;
 }
 
 // TODO: This will be used in other examples,
@@ -58,7 +60,8 @@ void write_ppm(const char *path){
 }
 
 int main(){
-	dda(0, 0, 100, 100, 100);
+	dda(0, 0, BUFFER_WIDTH-1, BUFFER_HEIGHT-1, 100);
+	dda(0, BUFFER_HEIGHT-1, BUFFER_WIDTH-1, 0, 100);
 
 	write_ppm("./output.ppm");
 
