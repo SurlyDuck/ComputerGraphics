@@ -1,4 +1,4 @@
-#include "image.h"
+#include "utils.h"
 
 void write_ppm(uint32_t *buffer, const char *path, size_t buffer_width, size_t buffer_height){
 	FILE *file = fopen(path, "w+");

@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <stddef.h>
-#include "../include/image.h"
+#include "../include/utils.h"
 
 #define BUFFER_WIDTH  320
 #define BUFFER_HEIGHT 200
