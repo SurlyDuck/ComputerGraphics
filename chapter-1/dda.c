@@ -1,10 +1,12 @@
 // Algorithm for changing pixel values of the frame buffer along a line segment
 // Chapter 1
-// Pages 12-13
+// Pages 12-23
 
 #include <stdint.h>
 #include <unistd.h>
 #include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
 #include "../include/utils.h"
 
 #define BUFFER_WIDTH  320
@@ -12,12 +14,12 @@
 
 uint32_t frame_buffer[BUFFER_WIDTH * BUFFER_HEIGHT] = {0};
 
+// Algorithm 1-1
 void dda(int x1, int y1, int x2, int y2, uint8_t intensity){
-	ssize_t dx = x2 - x1;
-	ssize_t dy = y2 - y1;
-	size_t steps = (dx > dy) ? dx : dy;
-	if (!steps) steps = 1;
-	
+	int32_t dx = x2 - x1;
+	int32_t dy = y2 - y1;
+	size_t steps = (abs(dx) > abs(dy)) ? abs(dx) : abs(dy);
+	steps++;
 	float dx_step = (float)(dx) / (float)(steps);
 	float dy_step = (float)(dy) / (float)(steps);
 	
@@ -34,12 +36,34 @@ void dda(int x1, int y1, int x2, int y2, uint8_t intensity){
 	frame_buffer[(int)(BUFFER_WIDTH * (int)(y) + x)] = intensity << 24;
 }
 
+void erase(){
+	memset(frame_buffer, 0, BUFFER_WIDTH * BUFFER_HEIGHT * sizeof(uint32_t));
+}
+
+// Algorithm 1-2
+void draw_house(){
+	dda(10, 10, 10, 15, 0xFF);
+	dda(10, 10, 25, 1, 0xFF);
+	dda(40, 10, 25, 1, 0xFF);
+	dda(40, 10, 40, 15, 0xFF);
+	dda(40, 15, 10, 15, 0xFF);
+	write_ppm(frame_buffer, "./house.ppm", BUFFER_WIDTH, BUFFER_HEIGHT);
+}
+
+// Algorithm 1-3
+uint16_t year_sales[12] = {2000, 4000, 7000, 6000, 4000, 8000, 8000, 7000, 5000, 6000, 8000, 9000};
+void draw_line_graph(){
+	// TODO
+}
 
 int main(){
-	dda(0, 0, BUFFER_WIDTH-1, BUFFER_HEIGHT-1, 0xFF);
-	dda(0, BUFFER_HEIGHT-1, BUFFER_WIDTH-1, 0, 0xFF);
+	//dda(0, 0, BUFFER_WIDTH-1, BUFFER_HEIGHT-1, 0xFF);
+	//dda(0, BUFFER_HEIGHT-1, BUFFER_WIDTH-1, 0, 0xFF);
+	erase();
+	draw_house();
 
-	write_ppm(frame_buffer, "./output.ppm", BUFFER_WIDTH, BUFFER_HEIGHT);
+	erase();
+	draw_line_graph();
 
 	return 0;
 }

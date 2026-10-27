@@ -8,7 +8,7 @@ run: dda
 	./dda
 
 dda: dda.c
-	cc $(CFLAGS) -o dda dda.c ../include/image.c
+	cc $(CFLAGS) -o dda dda.c ../include/image.c 
 
 clear: dda
 	rm dda
