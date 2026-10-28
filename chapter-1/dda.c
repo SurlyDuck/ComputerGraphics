@@ -51,8 +51,35 @@ void draw_house(){
 }
 
 // Algorithm 1-3
+#define Y_RANGE 10000.00f
+#define X_RANGE 12.00f
+#define Y_AXIS_SIZE BUFFER_HEIGHT - 10
+#define X_AXIS_SIZE (BUFFER_WIDTH  - 50)
 uint16_t year_sales[12] = {2000, 4000, 7000, 6000, 4000, 8000, 8000, 7000, 5000, 6000, 8000, 9000};
 void draw_line_graph(){
+
+	// axis
+	dda(1, 0, 1, Y_AXIS_SIZE, 0xFF);
+	dda(1, Y_AXIS_SIZE, X_AXIS_SIZE, Y_AXIS_SIZE, 0xFF);
+	
+	for(size_t i = 0; i < sizeof(year_sales)/sizeof(year_sales[0]); ++i){
+		float current_x_point = (X_AXIS_SIZE/X_RANGE) * i;
+		float current_y_point = Y_AXIS_SIZE - ((float)(year_sales[i]/Y_RANGE) * Y_AXIS_SIZE);
+		float last_x_point = current_x_point;
+		float last_y_point = current_y_point;
+
+		if(i > 0){
+			last_x_point = (X_AXIS_SIZE/X_RANGE) * (i-1);
+			last_y_point = Y_AXIS_SIZE - ((float)(year_sales[i-1]/Y_RANGE) * Y_AXIS_SIZE);
+		}
+		
+		dda(last_x_point, last_y_point, current_x_point, current_y_point, 0xFF);
+	}
+
+	write_ppm(frame_buffer, "./graph_line.ppm", BUFFER_WIDTH, BUFFER_HEIGHT);
+}
+
+void draw_bar_graph(){
 	// TODO
 }
 
