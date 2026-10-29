@@ -12,6 +12,12 @@
 #define BUFFER_WIDTH  320
 #define BUFFER_HEIGHT 200
 
+// Used for all graph exercises
+#define Y_RANGE 10000.00f
+#define X_RANGE 12.00f
+#define Y_AXIS_SIZE BUFFER_HEIGHT - 10
+#define X_AXIS_SIZE (BUFFER_WIDTH  - 50)
+
 uint32_t frame_buffer[BUFFER_WIDTH * BUFFER_HEIGHT] = {0};
 
 // Algorithm 1-1
@@ -47,17 +53,11 @@ void draw_house(){
 	dda(40, 10, 25, 1, 0xFF);
 	dda(40, 10, 40, 15, 0xFF);
 	dda(40, 15, 10, 15, 0xFF);
-	write_ppm(frame_buffer, "./house.ppm", BUFFER_WIDTH, BUFFER_HEIGHT);
 }
 
 // Algorithm 1-3
-#define Y_RANGE 10000.00f
-#define X_RANGE 12.00f
-#define Y_AXIS_SIZE BUFFER_HEIGHT - 10
-#define X_AXIS_SIZE (BUFFER_WIDTH  - 50)
 uint16_t year_sales[12] = {2000, 4000, 7000, 6000, 4000, 8000, 8000, 7000, 5000, 6000, 8000, 9000};
 void draw_line_graph(){
-
 	// axis
 	dda(1, 0, 1, Y_AXIS_SIZE, 0xFF);
 	dda(1, Y_AXIS_SIZE, X_AXIS_SIZE, Y_AXIS_SIZE, 0xFF);
@@ -73,24 +73,37 @@ void draw_line_graph(){
 			last_y_point = Y_AXIS_SIZE - ((float)(year_sales[i-1]/Y_RANGE) * Y_AXIS_SIZE);
 		}
 		
-		dda(last_x_point, last_y_point, current_x_point, current_y_point, 0xFF);
+		dda(last_x_point+1, last_y_point, current_x_point+1, current_y_point, 0xFF);
 	}
-
-	write_ppm(frame_buffer, "./graph_line.ppm", BUFFER_WIDTH, BUFFER_HEIGHT);
 }
 
+// 1-4
 void draw_bar_graph(){
-	// TODO
+	// axis
+	dda(1, 0, 1, Y_AXIS_SIZE, 0xFF);
+	dda(1, Y_AXIS_SIZE, X_AXIS_SIZE, Y_AXIS_SIZE, 0xFF);
+
+	for(size_t i = 0; i < sizeof(year_sales)/sizeof(year_sales[0]); ++i){
+		float x = (X_AXIS_SIZE/X_RANGE) * i;
+		float y = Y_AXIS_SIZE - ((float)(year_sales[i]/Y_RANGE) * Y_AXIS_SIZE);
+
+		dda(x, Y_AXIS_SIZE, x, y, 0xFF);
+	}
+	
 }
 
 int main(){
-	//dda(0, 0, BUFFER_WIDTH-1, BUFFER_HEIGHT-1, 0xFF);
-	//dda(0, BUFFER_HEIGHT-1, BUFFER_WIDTH-1, 0, 0xFF);
 	erase();
 	draw_house();
+	write_ppm(frame_buffer, "./house.ppm", BUFFER_WIDTH, BUFFER_HEIGHT);
 
 	erase();
 	draw_line_graph();
+	write_ppm(frame_buffer, "./graph_line.ppm", BUFFER_WIDTH, BUFFER_HEIGHT);
+
+	erase();
+	draw_bar_graph();
+	write_ppm(frame_buffer, "./graph_bar.ppm", BUFFER_WIDTH, BUFFER_HEIGHT);
 
 	return 0;
 }
