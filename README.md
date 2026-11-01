@@ -5,10 +5,10 @@ Creating this repository for personal use.
 
 Building all examples:
 ```
-./build_all.sh
+$ ./build_all.sh
 ```
 Per chapter:
 ```
-cd chapter-x
-make -B
+$ cd chapter-x
+$ make -B
 ```

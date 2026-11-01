@@ -101,6 +101,11 @@ void draw_centered_square(uint8_t length){
 	dda(origin_x, origin_y + length, origin_x + length, origin_y + length, 0xFF);
 }
 
+// 1-6
+void draw_curve(){
+	// TODO
+}
+
 int main(){
 	erase();
 	draw_house();
@@ -120,6 +125,11 @@ int main(){
 	draw_centered_square(32);
 	draw_centered_square(64);
 	write_ppm(frame_buffer, "./squares.ppm", BUFFER_WIDTH, BUFFER_HEIGHT);
+
+
+	erase();
+	draw_curver();
+	write_ppm(frame_buffer, "./curve.ppm", BUFFER_WIDTH, BUFFER_HEIGHT);
 
 	return 0;
 }
