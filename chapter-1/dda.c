@@ -89,7 +89,16 @@ void draw_bar_graph(){
 
 		dda(x, Y_AXIS_SIZE, x, y, 0xFF);
 	}
-	
+}
+
+// 1-5
+void draw_centered_square(uint8_t length){
+	size_t origin_x = BUFFER_WIDTH/2 - length/2;
+	size_t origin_y = BUFFER_HEIGHT/2 - length/2;
+	dda(origin_x, origin_y, origin_x, origin_y + length, 0xFF);
+	dda(origin_x + length, origin_y, origin_x + length, origin_y + length, 0xFF);
+	dda(origin_x, origin_y, origin_x + length, origin_y, 0xFF);
+	dda(origin_x, origin_y + length, origin_x + length, origin_y + length, 0xFF);
 }
 
 int main(){
@@ -104,6 +113,13 @@ int main(){
 	erase();
 	draw_bar_graph();
 	write_ppm(frame_buffer, "./graph_bar.ppm", BUFFER_WIDTH, BUFFER_HEIGHT);
+
+	erase();
+	draw_centered_square(4);
+	draw_centered_square(16);
+	draw_centered_square(32);
+	draw_centered_square(64);
+	write_ppm(frame_buffer, "./squares.ppm", BUFFER_WIDTH, BUFFER_HEIGHT);
 
 	return 0;
 }
