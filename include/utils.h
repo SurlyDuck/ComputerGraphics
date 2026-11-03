@@ -1,4 +1,4 @@
-// Subroutines used for lots of examples
+// Subroutines used in several examples
 
 #ifndef UTILS_H_
 #define UTILS_H_

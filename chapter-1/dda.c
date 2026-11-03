@@ -15,7 +15,7 @@
 // Used for all graph exercises
 #define Y_RANGE 10000.00f
 #define X_RANGE 12.00f
-#define Y_AXIS_SIZE BUFFER_HEIGHT - 10
+#define Y_AXIS_SIZE (BUFFER_HEIGHT - 10)
 #define X_AXIS_SIZE (BUFFER_WIDTH  - 50)
 
 uint32_t frame_buffer[BUFFER_WIDTH * BUFFER_HEIGHT] = {0};
@@ -40,6 +40,11 @@ void dda(int x1, int y1, int x2, int y2, uint8_t intensity){
 	} 
 
 	frame_buffer[(int)(BUFFER_WIDTH * (int)(y) + x)] = intensity << 24;
+}
+
+void draw_axis(){
+	dda(1, 0, 1, Y_AXIS_SIZE, 0xFF);
+	dda(1, Y_AXIS_SIZE, X_AXIS_SIZE, Y_AXIS_SIZE, 0xFF);
 }
 
 void erase(){
@@ -87,7 +92,7 @@ void draw_bar_graph(){
 		float x = (X_AXIS_SIZE/X_RANGE) * i;
 		float y = Y_AXIS_SIZE - ((float)(year_sales[i]/Y_RANGE) * Y_AXIS_SIZE);
 
-		dda(x, Y_AXIS_SIZE, x, y, 0xFF);
+		dda(x+1, Y_AXIS_SIZE, x+1, y, 0xFF);
 	}
 }
 
@@ -103,8 +108,31 @@ void draw_centered_square(uint8_t length){
 
 // 1-6
 void draw_curve(){
-	// TODO
+	// x = y²/10
+	draw_axis();
+	for(size_t i = 0; i < Y_RANGE; ++i){	
+		float y = i;
+		float x = (float)(y*y)/10.0f;
+		float previous_x = x;
+		float previous_y = y;
+
+		if(y > 0){
+			previous_y = i - 1;
+			previous_x = (float)(previous_y*previous_y)/10.0f;
+		}
+
+		//map
+		y = (float)((Y_AXIS_SIZE / (Y_RANGE / 1000.0f)) * y);
+		x = (float)((X_AXIS_SIZE / X_RANGE) * x);
+		previous_y = (float)((Y_AXIS_SIZE / (Y_RANGE / 1000.0f)) * previous_y);
+		previous_x = (float)((X_AXIS_SIZE / X_RANGE) * previous_x);
+
+		if(y > Y_AXIS_SIZE-1 || x > X_AXIS_SIZE-1) break;
+		
+		dda(previous_x+1, Y_AXIS_SIZE - previous_y+1, x+1, Y_AXIS_SIZE - y+1, 0xFF);
+	}
 }
+
 
 int main(){
 	erase();
@@ -126,9 +154,8 @@ int main(){
 	draw_centered_square(64);
 	write_ppm(frame_buffer, "./squares.ppm", BUFFER_WIDTH, BUFFER_HEIGHT);
 
-
 	erase();
-	draw_curver();
+	draw_curve();
 	write_ppm(frame_buffer, "./curve.ppm", BUFFER_WIDTH, BUFFER_HEIGHT);
 
 	return 0;
