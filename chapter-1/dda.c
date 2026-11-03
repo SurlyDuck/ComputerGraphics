@@ -63,9 +63,7 @@ void draw_house(){
 // Algorithm 1-3
 uint16_t year_sales[12] = {2000, 4000, 7000, 6000, 4000, 8000, 8000, 7000, 5000, 6000, 8000, 9000};
 void draw_line_graph(){
-	// axis
-	dda(1, 0, 1, Y_AXIS_SIZE, 0xFF);
-	dda(1, Y_AXIS_SIZE, X_AXIS_SIZE, Y_AXIS_SIZE, 0xFF);
+	draw_axis();
 	
 	for(size_t i = 0; i < sizeof(year_sales)/sizeof(year_sales[0]); ++i){
 		float current_x_point = (X_AXIS_SIZE/X_RANGE) * i;
@@ -84,9 +82,7 @@ void draw_line_graph(){
 
 // 1-4
 void draw_bar_graph(){
-	// axis
-	dda(1, 0, 1, Y_AXIS_SIZE, 0xFF);
-	dda(1, Y_AXIS_SIZE, X_AXIS_SIZE, Y_AXIS_SIZE, 0xFF);
+	draw_axis();
 
 	for(size_t i = 0; i < sizeof(year_sales)/sizeof(year_sales[0]); ++i){
 		float x = (X_AXIS_SIZE/X_RANGE) * i;
