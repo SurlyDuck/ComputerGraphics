@@ -129,7 +129,6 @@ void draw_curve(){
 	}
 }
 
-
 int main(){
 	erase();
 	draw_house();
