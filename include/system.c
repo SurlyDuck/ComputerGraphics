@@ -15,15 +15,59 @@
 //
 // I took some liberties in using modern features from C  like enums and structures for this this implementation.
 
-
-typedef enum opcode{
-	MOVE,
-	DRAW,
-}opcode;
-
 #include "utils.h"
 
+typedef enum opcode{
+	MOVE = 1,
+	LINE = 2
+}opcode;
+
+typedef struct{
+	opcode op;
+	float operand_x;
+	float operand_y;
+}instruction;
+
+typedef struct {
+	instruction items;
+	size_t count; /* FREE */
+	size_t capacity;
+}instructions;
+
+static float df_pen_x = 0.00f;
+static float df_pen_y = 0.00f;
+
+// 2-1
 void put_point(opcode op, float x, float y){
 
 }
 
+// 2-2
+void get_point(size_t nth, opcode *op, float *x, float *y){
+
+}
+
+// 2-3
+void display_file_enter(opcode op){
+
+}
+
+// 2-4
+void move_abs_2(float x, float y){
+
+}
+
+// 2-5
+void line_abs_2(float x, float y){
+
+}
+
+// 2-6
+void move_rel_2(float dx, float dy){
+
+}
+
+// 2-7
+void line_rel_2(float dx, float dy){
+
+}
