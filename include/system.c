@@ -5,8 +5,7 @@
 // Since implementing this system is part from the exercises, the answers for them will be in here.
 //
 // With this system the author was aiming at platform independence.
-// Back in the day, many display devices did not have a frame buffer, thus the use of a display file.
-// Nowdays a frame buffer is unavoidable modern hardware, but we will keep the author's vision and historical context in the implementation.
+// Back in the day, many display devices did not have a frame buffer and memory was very expensive, thus the use of a display file.
 //
 // The book presents the system as: Source Program >> Display File >> Interpreter >> Display
 // but I think it also can be seem as: Compiller >> Bytecode >> Virtual machine >> Display Device
@@ -29,45 +28,84 @@ typedef struct{
 }instruction;
 
 typedef struct {
-	instruction items;
+	instruction *instructions;
 	size_t count; /* FREE */
 	size_t capacity;
-}instructions;
+}display_file;
 
 static float df_pen_x = 0.00f;
 static float df_pen_y = 0.00f;
 
-// 2-1
+//---------------------------------------------------------------
+// Subroutines for ENTERING commands into the display file
+//---------------------------------------------------------------
+// 2.1
 void put_point(opcode op, float x, float y){
 
 }
 
-// 2-2
+// 2.2
 void get_point(size_t nth, opcode *op, float *x, float *y){
 
 }
 
-// 2-3
+// 2.3
 void display_file_enter(opcode op){
 
 }
 
-// 2-4
+// 2.4
 void move_abs_2(float x, float y){
 
 }
 
-// 2-5
+// 2.5
 void line_abs_2(float x, float y){
 
 }
 
-// 2-6
+// 2.6
 void move_rel_2(float dx, float dy){
 
 }
 
-// 2-7
+// 2.7
 void line_rel_2(float dx, float dy){
+
+}
+
+//---------------------------------------------------------------
+// Subroutines for EXECUTING commands from the interpreter
+//---------------------------------------------------------------
+// 2.8
+void do_move(){
+
+}
+
+// 2.9
+void do_line(){
+
+}
+
+//---------------------------------------------------------------
+// Subroutines for INTERPRETING commands from the display file
+//---------------------------------------------------------------
+// 2.10
+void interpret(size_t start, size_t count){
+
+}
+
+// 2.11
+void new_frame(){
+
+}
+
+// 2.12
+void make_picture_current(){
+
+}
+
+// 2.13
+void initialize_2a(){
 
 }
