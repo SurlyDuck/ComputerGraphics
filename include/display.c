@@ -2,7 +2,10 @@
 
 #include "utils.h"
 
-// Maybe a dummy if the device is `immediate` ?
+void DISPLAY_init(){
+
+}
+
 void DISPLAY_show(){
 
 }
