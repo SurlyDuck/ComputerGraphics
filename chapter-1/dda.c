@@ -20,7 +20,7 @@
 
 uint32_t frame_buffer[BUFFER_WIDTH * BUFFER_HEIGHT] = {0};
 
-// Algorithm 1-1
+// Algorithm 1.1
 void dda(int x1, int y1, int x2, int y2, uint8_t intensity){
 	int32_t dx = x2 - x1;
 	int32_t dy = y2 - y1;
@@ -51,7 +51,7 @@ void erase(){
 	memset(frame_buffer, 0, BUFFER_WIDTH * BUFFER_HEIGHT * sizeof(uint32_t));
 }
 
-// Algorithm 1-2
+// Exercise 1-2
 void draw_house(){
 	dda(10, 10, 10, 15, 0xFF);
 	dda(10, 10, 25, 1, 0xFF);
@@ -60,7 +60,7 @@ void draw_house(){
 	dda(40, 15, 10, 15, 0xFF);
 }
 
-// Algorithm 1-3
+// Exercise 1-3
 uint16_t year_sales[12] = {2000, 4000, 7000, 6000, 4000, 8000, 8000, 7000, 5000, 6000, 8000, 9000};
 void draw_line_graph(){
 	draw_axis();
@@ -80,7 +80,7 @@ void draw_line_graph(){
 	}
 }
 
-// 1-4
+// Exercise 1-4
 void draw_bar_graph(){
 	draw_axis();
 
@@ -92,7 +92,7 @@ void draw_bar_graph(){
 	}
 }
 
-// 1-5
+// Exercise 1-5
 void draw_centered_square(uint8_t length){
 	size_t origin_x = BUFFER_WIDTH/2 - length/2;
 	size_t origin_y = BUFFER_HEIGHT/2 - length/2;
@@ -102,7 +102,7 @@ void draw_centered_square(uint8_t length){
 	dda(origin_x, origin_y + length, origin_x + length, origin_y + length, 0xFF);
 }
 
-// 1-6
+// Exercise 1-6
 void draw_curve(){
 	// x = y²/10
 	draw_axis();
