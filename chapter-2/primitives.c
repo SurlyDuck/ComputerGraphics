@@ -1,14 +1,17 @@
-#include "../include/utils.h"
-
 // Primitives - Exercises
+// 2-1 a,b,c --> ../include/core.c
 
-// 2-1 a,b,c --> ../include/system.c
+#include "../include/core.h"
 
 // 2-2
 void draw_house(){
 
 }
 
-void main(){
-
+int main(){
+	initialize_2();
+	
+	
+	
+	return 0;
 }

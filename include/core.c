@@ -1,20 +1,6 @@
-// Implementation of the Graphics System showed in the book.
-// Subroutines for drawing points, lines from absolute or relative positions, alphanumeric characters and much more.
-// Seems to draw inspiration from an "ACM CORE Graphics System".
-//
-// Since implementing this system is part of the exercises, the answers for them will be in here.
-//
-// With this system, the author was aiming at platform independence.
-// Back in the day, many display devices did not have a frame buffer and memory was very expensive, thus the use of a display file.
-//
-// The book presents the system as: Source Program >> Display File >> Interpreter >> Display
-// but I think it also can be seem as: Compiller >> Bytecode >> Virtual machine >> Display Device
-// 
-// The Display File is just a set of instructions like "Draw Line" or "Move pen".
-
 #define MAX_OPCODES 1024*1024
 
-#include "utils.h"
+#include "core.h"
 
 typedef struct{
 	int16_t opcode;
@@ -99,6 +85,11 @@ void do_char(){
 
 }
 
+// 2.21
+void do_style(int16_t op){
+
+}
+
 //---------------------------------------------------------------
 // Subroutines for INTERPRETING commands from the display file
 //---------------------------------------------------------------
@@ -117,14 +108,20 @@ void make_picture_current(){
 
 }
 
-// 2.13
+// 2.13 initialization of line drawing
 void initialize_2a(){
-
+	DISPLAY_init();
 }
 
-// 2.19
+// 2.19 Initialization of character drawing
 void initialize_2b(){
+	initialize_2a();
+}
 
+// 2.24
+void initialize_2(){
+	initialize_2b();
+	do_style(-1);
 }
 
 // 2.14
