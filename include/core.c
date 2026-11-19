@@ -105,7 +105,7 @@ void new_frame(){
 
 // 2.12
 void make_picture_current(){
-
+	DISPLAY_show();
 }
 
 // 2.13 initialization of line drawing

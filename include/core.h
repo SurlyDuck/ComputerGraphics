@@ -16,6 +16,8 @@
 #include <stdint.h>
 #include <assert.h>
 
+extern int16_t DISPLAY_frame_pen_x;
+extern int16_t DISPLAY_frame_pen_y;
 
 // Display file opcodes
 enum {
@@ -27,9 +29,12 @@ enum {
 };
 
 // CORE user routines
-void initialize_2();
-
+void initialize_2(void);
+void move_abs_2(float x, float y);
+void line_rel_2(float x, float y);
+void make_picture_current();
 
 // Display device subroutines
-// In our system the user does not interact with it directly
 void DISPLAY_init(void);
+void DISPLAY_show(void);
+int  DISPLAY_is_enabled(void);
