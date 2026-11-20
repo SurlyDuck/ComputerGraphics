@@ -16,8 +16,6 @@
 #include <stdint.h>
 #include <assert.h>
 
-extern int16_t DISPLAY_frame_pen_x;
-extern int16_t DISPLAY_frame_pen_y;
 
 // Display file opcodes
 enum {
@@ -32,9 +30,14 @@ enum {
 void initialize_2(void);
 void move_abs_2(float x, float y);
 void line_rel_2(float x, float y);
-void make_picture_current();
+void make_picture_current(void);
 
 // Display device subroutines
-void DISPLAY_init(void);
-void DISPLAY_show(void);
-int  DISPLAY_is_enabled(void);
+void   DISPLAY_init(void);
+void   DISPLAY_show(void);
+void   DISPLAY_set_frame_pen(int16_t x, int16_t y);
+int    DISPLAY_is_enabled(void);
+size_t DISPLAY_get_width(void);
+size_t DISPLAY_get_height(void);
+
+

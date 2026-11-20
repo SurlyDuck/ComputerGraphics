@@ -6,8 +6,8 @@
 #include "core.h"
 #include "raylib.h"
 
-int16_t DISPLAY_frame_pen_x = 0;
-int16_t DISPLAY_frame_pen_y = 0;
+static int16_t frame_pen_x = 0;
+static int16_t frame_pen_y = 0;
 
 void DISPLAY_init(){
 	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Display Device");
@@ -25,5 +25,27 @@ void DISPLAY_erase(){
 
 int DISPLAY_is_enabled(){
 	return !WindowShouldClose();
+}
+
+size_t DISPLAY_get_width(void){
+	return WINDOW_WIDTH;
+}
+
+size_t DISPLAY_get_height(void){
+	return WINDOW_HEIGHT;
+}
+
+void DISPLAY_dda(int16_t x1, int16_t y1, int16_t x2, int16_t y2){
+
+}
+
+void DISPLAY_set_frame_pen(int16_t x, int16_t y){
+	frame_pen_x = x;
+	frame_pen_y = y;
+}
+
+void DISPLAY_get_frame_pen(int16_t *x, int16_t *y){
+	*x = frame_pen_x;
+	*y = frame_pen_y;
 }
 

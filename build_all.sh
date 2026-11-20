@@ -3,7 +3,7 @@
 # Build all examples and exercises for each directory
 # TODO: creation and testing of golden files
 
-directories=("./chapter-1")
+directories=("./chapter-1" "./chapter-2")
 declare -i passes failures
 passes=0
 failures=0

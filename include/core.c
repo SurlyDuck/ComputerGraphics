@@ -44,17 +44,23 @@ void get_point(size_t nth, int16_t *op, float *x, float *y){
 
 // 2.3
 void display_file_enter(int16_t op){
-
+	put_point(op, df_pen_x, df_pen_y);
 }
 
 // 2.4
 void move_abs_2(float x, float y){
+	df_pen_x = x;
+	df_pen_y = y;
 
+	display_file_enter(MOVE);
 }
 
 // 2.5
 void line_abs_2(float x, float y){
+	df_pen_x = x;
+	df_pen_y = y;
 
+	display_file_enter(LINE);
 }
 
 // 2.6
@@ -71,12 +77,15 @@ void line_rel_2(float dx, float dy){
 // Subroutines for EXECUTING commands from the interpreter
 //---------------------------------------------------------------
 // 2.8
-void do_move(){
-
+void do_move(float x, float y){
+	size_t width  = DISPLAY_get_width();
+	size_t height = DISPLAY_get_height();
+	
+	DISPLAY_set_frame_pen(width * x, height - height * y);
 }
 
 // 2.9
-void do_line(){
+void do_line(float x, float y){
 
 }
 
@@ -95,7 +104,13 @@ void do_style(int16_t op){
 //---------------------------------------------------------------
 // 2.10
 void interpret(size_t start, size_t count){
-
+	for(size_t i = start; i < count-1; ++i){
+		switch(df.instructions[i].opcode){
+			case MOVE: do_move(df.instructions[i].operand_x, df.instructions[i].operand_y); break;
+			case LINE: do_line(df.instructions[i].operand_x, df.instructions[i].operand_y); break;
+			default: break;
+		}
+	}
 }
 
 // 2.11
@@ -105,6 +120,10 @@ void new_frame(){
 
 // 2.12
 void make_picture_current(){
+	if(df.count > 0){
+		interpret(0, df.count);
+	}
+	
 	DISPLAY_show();
 }
 
