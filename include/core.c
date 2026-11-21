@@ -86,7 +86,15 @@ void do_move(float x, float y){
 
 // 2.9
 void do_line(float x, float y){
+	int16_t x1, y1, x2, y2;
+	size_t width  = DISPLAY_get_width();
+	size_t height = DISPLAY_get_height();
 
+	DISPLAY_get_frame_pen(&x1, &y1);
+	DISPLAY_set_frame_pen((int16_t)(x * width), (int16_t)(height - height * y));
+	DISPLAY_get_frame_pen(&x2, &y2);
+
+	DISPLAY_dda(x1, y1, x2, y2);
 }
 
 // 2.18 
@@ -104,7 +112,7 @@ void do_style(int16_t op){
 //---------------------------------------------------------------
 // 2.10
 void interpret(size_t start, size_t count){
-	for(size_t i = start; i < count-1; ++i){
+	for(size_t i = start; i < count; ++i){
 		switch(df.instructions[i].opcode){
 			case MOVE: do_move(df.instructions[i].operand_x, df.instructions[i].operand_y); break;
 			case LINE: do_line(df.instructions[i].operand_x, df.instructions[i].operand_y); break;
@@ -120,6 +128,8 @@ void new_frame(){
 
 // 2.12
 void make_picture_current(){
+	DISPLAY_start();
+
 	if(df.count > 0){
 		interpret(0, df.count);
 	}

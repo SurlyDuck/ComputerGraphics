@@ -1,6 +1,6 @@
 .PHONY: clear all run
 
-CFLAGS= -I -ggdb -std=c99 -Wall -Wextra -pedantic
+CFLAGS= -ggdb -I -std=c99 -Wall -Wextra -pedantic
 LFLAGS= -L../libs/ -lraylib -lX11 -lm -lGL
 
 all: primitives run

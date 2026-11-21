@@ -4,7 +4,7 @@
 #define WINDOW_HEIGHT 600
 
 #include "core.h"
-#include "raylib.h"
+#include "../include/raylib.h"
 
 static int16_t frame_pen_x = 0;
 static int16_t frame_pen_y = 0;
@@ -19,8 +19,12 @@ void DISPLAY_show(){
 	EndDrawing();
 }
 
-void DISPLAY_erase(){
+void DISPLAY_start(){
+	BeginDrawing();
+}
 
+void DISPLAY_erase(){
+	ClearBackground(BLACK);
 }
 
 int DISPLAY_is_enabled(){
@@ -36,7 +40,7 @@ size_t DISPLAY_get_height(void){
 }
 
 void DISPLAY_dda(int16_t x1, int16_t y1, int16_t x2, int16_t y2){
-
+	DrawLine(x1, y1, x2, y2, GREEN);
 }
 
 void DISPLAY_set_frame_pen(int16_t x, int16_t y){
