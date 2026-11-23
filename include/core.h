@@ -36,6 +36,7 @@ void make_picture_current(void);
 // Display device subroutines
 void   DISPLAY_init(void);
 void   DISPLAY_show(void);
+void   DISPLAY_erase(void);
 void   DISPLAY_set_frame_pen(int16_t x, int16_t y);
 void   DISPLAY_get_frame_pen(int16_t *x, int16_t *y);
 void   DISPLAY_dda(int16_t x1, int16_t y1, int16_t x2, int16_t y2);

@@ -17,10 +17,11 @@ typedef struct {
 static float df_pen_x  = 0.00f;
 static float df_pen_y  = 0.00f;
 static display_file df = {0};
+static int erase_frame = 0;
 
-//---------------------------------------------------------------
-// Subroutines for ENTERING commands into the display file
-//---------------------------------------------------------------
+//---------------------------------------------------------------------
+// Subroutines for ENTERING/READING commands into/from the display file
+//---------------------------------------------------------------------
 // 2.1
 void put_point(int16_t opcode, float x, float y){
 	assert(df.count < MAX_OPCODES);
@@ -39,7 +40,9 @@ void put_point(int16_t opcode, float x, float y){
 
 // 2.2
 void get_point(size_t nth, int16_t *op, float *x, float *y){
-
+	*op = df.instructions[nth].opcode;
+	*x  = df.instructions[nth].operand_x;
+	*y  = df.instructions[nth].operand_y;
 }
 
 // 2.3
@@ -65,12 +68,18 @@ void line_abs_2(float x, float y){
 
 // 2.6
 void move_rel_2(float dx, float dy){
+	df_pen_x += dx;
+	df_pen_y += dy;
 
+	display_file_enter(MOVE);
 }
 
 // 2.7
 void line_rel_2(float dx, float dy){
+	df_pen_x += dx;
+	df_pen_y += dy;
 
+	display_file_enter(LINE);
 }
 
 //---------------------------------------------------------------
@@ -123,13 +132,16 @@ void interpret(size_t start, size_t count){
 
 // 2.11
 void new_frame(){
-
+	erase_frame = 1;
 }
 
 // 2.12
 void make_picture_current(){
 	DISPLAY_start();
-
+	
+	if(erase_frame) DISPLAY_erase();
+	erase_frame = 0;
+	
 	if(df.count > 0){
 		interpret(0, df.count);
 	}
@@ -154,8 +166,17 @@ void initialize_2(){
 }
 
 // 2.14
-void set_charup(){
+void set_charup(float x, float y){
+	assert((int)(x*x + y*y));
+	uint8_t chr_width, chr_height;
+	DISPLAY_get_chr_size(&chr_width, &chr_height);
+	
+	float default_step = (uint8_t)(y * chr_width + x * chr_height);
+	default_step      /= x*x + y*y;
+	
+	float true_step = default_step * (1 + chr_separation);
 
+	
 }
 
 // 2.15
@@ -167,3 +188,4 @@ void set_charspace(){
 void text(const char *text){
 
 }
+
