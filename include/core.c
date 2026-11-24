@@ -14,10 +14,13 @@ typedef struct {
 	size_t capacity;
 }display_file;
 
-static float df_pen_x  = 0.00f;
-static float df_pen_y  = 0.00f;
-static display_file df = {0};
-static int erase_frame = 0;
+static display_file df      = {0};
+static int erase_frame      = 0;
+static float df_pen_x       = 0.00f;
+static float df_pen_y       = 0.00f;
+static float chrsp_x        = 0.00f;
+static float chrsp_y        = 0.00f;
+static float chr_separation = 0.00f;
 
 //---------------------------------------------------------------------
 // Subroutines for ENTERING/READING commands into/from the display file
@@ -166,26 +169,31 @@ void initialize_2(){
 }
 
 // 2.14
-void set_charup(float x, float y){
-	assert((int)(x*x + y*y));
+void set_charup(float dx, float dy){
+	float chrup_normalized_dem = dx*dx + dy*dy;
+	assert(chrup_normalized_dem > 0.0001 && "No charup direction");
+
 	uint8_t chr_width, chr_height;
 	DISPLAY_get_chr_size(&chr_width, &chr_height);
 	
-	float default_step = (uint8_t)(y * chr_width + x * chr_height);
-	default_step      /= x*x + y*y;
-	
-	float true_step = default_step * (1 + chr_separation);
+	float default_space = (float)(dy*chr_width) + (float)(dx*chr_height);
+	default_space = (default_space + default_space*chr_separation) / chrup_normalized_dem;
 
-	
+	chrsp_x = default_space * dy;
+	chrsp_y = default_space * -dx;
 }
 
 // 2.15
-void set_charspace(){
-
+void set_charspace(float space){
+	chr_separation = space;
+	set_charup(chrsp_y, -chrsp_x);
 }
 
 // 2.16
 void text(const char *text){
+	size_t length = 0;
+	while(text[length++]) length;
 
+	// TODO
 }
 

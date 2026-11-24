@@ -2,6 +2,7 @@
 
 #define WINDOW_WIDTH  800
 #define WINDOW_HEIGHT 600
+#define FONT_SIZE     12
 
 #include "core.h"
 #include "../include/raylib.h"
@@ -51,5 +52,10 @@ void DISPLAY_set_frame_pen(int16_t x, int16_t y){
 void DISPLAY_get_frame_pen(int16_t *x, int16_t *y){
 	*x = frame_pen_x;
 	*y = frame_pen_y;
+}
+
+void   DISPLAY_get_chr_size(uint8_t *chr_width, uint8_t *chr_height){
+	*chr_width  = FONT_SIZE/2;
+	*chr_height = FONT_SIZE/2;
 }
 
