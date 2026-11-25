@@ -2,7 +2,7 @@
 
 #define WINDOW_WIDTH  800
 #define WINDOW_HEIGHT 600
-#define FONT_SIZE     12
+#define FONT_SIZE     120
 
 #include "core.h"
 #include "../include/raylib.h"
@@ -54,8 +54,12 @@ void DISPLAY_get_frame_pen(int16_t *x, int16_t *y){
 	*y = frame_pen_y;
 }
 
-void   DISPLAY_get_chr_size(uint8_t *chr_width, uint8_t *chr_height){
-	*chr_width  = FONT_SIZE/2;
-	*chr_height = FONT_SIZE/2;
+void DISPLAY_get_chr_size(float *chr_width, float *chr_height){
+	*chr_width  = (float)(FONT_SIZE/2.0f);
+	*chr_height = (float)(FONT_SIZE/2.0f);
 }
 
+void DISPLAY_generate_char(char chr, int16_t x, int16_t y){
+	const char c[2] = {chr, 0};
+	DrawText(c, x, y, FONT_SIZE/2, GREEN);
+}

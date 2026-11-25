@@ -16,11 +16,15 @@ typedef struct {
 
 static display_file df      = {0};
 static int erase_frame      = 0;
+static size_t width         = 0;
+static size_t height        = 0;
 static float df_pen_x       = 0.00f;
 static float df_pen_y       = 0.00f;
 static float chrsp_x        = 0.00f;
 static float chrsp_y        = 0.00f;
 static float chr_separation = 0.00f;
+static float chr_width      = 0.00f; 
+static float chr_height     = 0.00f;
 
 //---------------------------------------------------------------------
 // Subroutines for ENTERING/READING commands into/from the display file
@@ -85,22 +89,32 @@ void line_rel_2(float dx, float dy){
 	display_file_enter(LINE);
 }
 
+// 2.16
+void text(const char *text){
+	float previous_df_pen_x = df_pen_x;
+	float previous_df_pen_y = df_pen_y;
+
+	for(size_t i = 0; text[i]; ++i){
+		display_file_enter((int16_t)text[i]);
+
+		df_pen_x += chrsp_x;
+		df_pen_y += chrsp_y;
+	}
+
+	move_abs_2(previous_df_pen_x, previous_df_pen_y);
+}
+
 //---------------------------------------------------------------
 // Subroutines for EXECUTING commands from the interpreter
 //---------------------------------------------------------------
 // 2.8
 void do_move(float x, float y){
-	size_t width  = DISPLAY_get_width();
-	size_t height = DISPLAY_get_height();
-	
 	DISPLAY_set_frame_pen(width * x, height - height * y);
 }
 
 // 2.9
 void do_line(float x, float y){
 	int16_t x1, y1, x2, y2;
-	size_t width  = DISPLAY_get_width();
-	size_t height = DISPLAY_get_height();
 
 	DISPLAY_get_frame_pen(&x1, &y1);
 	DISPLAY_set_frame_pen((int16_t)(x * width), (int16_t)(height - height * y));
@@ -110,8 +124,11 @@ void do_line(float x, float y){
 }
 
 // 2.18 
-void do_char(){
-
+void do_char(int16_t chr, float x, float y){
+	float x1 = x * width;
+	float y1 = height - y * height;
+	
+	DISPLAY_generate_char((char)chr, x1, y1);
 }
 
 // 2.21
@@ -128,7 +145,10 @@ void interpret(size_t start, size_t count){
 		switch(df.instructions[i].opcode){
 			case MOVE: do_move(df.instructions[i].operand_x, df.instructions[i].operand_y); break;
 			case LINE: do_line(df.instructions[i].operand_x, df.instructions[i].operand_y); break;
-			default: break;
+			default:{
+				if(df.instructions[i].opcode > 31) do_char(df.instructions[i].opcode, df.instructions[i].operand_x, df.instructions[i].operand_y);
+				else assert(0 && "Unknown instruction");
+			}break;
 		}
 	}
 }
@@ -160,6 +180,13 @@ void initialize_2a(){
 // 2.19 Initialization of character drawing
 void initialize_2b(){
 	initialize_2a();
+	width          = DISPLAY_get_width();
+	height         = DISPLAY_get_height();
+	chr_separation = 0;
+
+	DISPLAY_get_chr_size(&chr_width, &chr_height);
+	chr_width  /= (float)(width);
+	chr_height /= (float)(height);
 }
 
 // 2.24
@@ -171,12 +198,9 @@ void initialize_2(){
 // 2.14
 void set_charup(float dx, float dy){
 	float chrup_normalized_dem = dx*dx + dy*dy;
-	assert(chrup_normalized_dem > 0.0001 && "No charup direction");
+	assert(chrup_normalized_dem > 0.0000001f && "No charup direction");
 
-	uint8_t chr_width, chr_height;
-	DISPLAY_get_chr_size(&chr_width, &chr_height);
-	
-	float default_space = (float)(dy*chr_width) + (float)(dx*chr_height);
+	float default_space = fabs(dy*chr_width) + fabs(dx*chr_height);
 	default_space = (default_space + default_space*chr_separation) / chrup_normalized_dem;
 
 	chrsp_x = default_space * dy;
@@ -186,14 +210,7 @@ void set_charup(float dx, float dy){
 // 2.15
 void set_charspace(float space){
 	chr_separation = space;
-	set_charup(chrsp_y, -chrsp_x);
+	set_charup(-chrsp_y, chrsp_x);
 }
 
-// 2.16
-void text(const char *text){
-	size_t length = 0;
-	while(text[length++]) length;
-
-	// TODO
-}
 

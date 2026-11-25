@@ -13,6 +13,7 @@
 // The Display File is just a set of instructions like "Draw Line" or "Move pen".
 
 #include <stdlib.h>
+#include <math.h>
 #include <stdint.h>
 #include <assert.h>
 
@@ -42,8 +43,9 @@ void   DISPLAY_show(void);
 void   DISPLAY_erase(void);
 void   DISPLAY_set_frame_pen(int16_t x, int16_t y);
 void   DISPLAY_get_frame_pen(int16_t *x, int16_t *y);
+void   DISPLAY_generate_char(char chr, int16_t x, int16_t y);
 void   DISPLAY_dda(int16_t x1, int16_t y1, int16_t x2, int16_t y2);
-void   DISPLAY_get_chr_size(uint8_t *chr_width, uint8_t *chr_height);
+void   DISPLAY_get_chr_size(float *chr_width, float *chr_height);
 void   DISPLAY_start(void);
 int    DISPLAY_is_enabled(void);
 size_t DISPLAY_get_width(void);
