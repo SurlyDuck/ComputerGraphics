@@ -17,7 +17,17 @@ int main(){
 	set_charup(0, 1.00f);
 	set_charspace(0.0f);
 	text("Ello");
+	move_abs_2(0, 1);
+	set_charup(0, 1.00f);
+	set_charspace(0.0f);
+	text("abcdefghijklmnopq");
+	move_abs_2(0, 1.0f-0.05f);
+	text("ABCDEFGHIJKLMNOPQ");
+	set_charup(-0.5, 0.86);
+	move_abs_2(0, 0.5f);
+	text("roof");
 
+	move_abs_2(.5, .5);
 
 	line_abs_2(.6, .6);
 	move_abs_2(.5, .5);

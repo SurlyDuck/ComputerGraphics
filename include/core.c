@@ -147,6 +147,7 @@ void interpret(size_t start, size_t count){
 			case LINE: do_line(df.instructions[i].operand_x, df.instructions[i].operand_y); break;
 			default:{
 				if(df.instructions[i].opcode > 31) do_char(df.instructions[i].opcode, df.instructions[i].operand_x, df.instructions[i].operand_y);
+				else if(df.instructions[i].opcode < 0) do_style(df.instructions[i].opcode);
 				else assert(0 && "Unknown instruction");
 			}break;
 		}

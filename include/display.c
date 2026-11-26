@@ -2,7 +2,7 @@
 
 #define WINDOW_WIDTH  800
 #define WINDOW_HEIGHT 600
-#define FONT_SIZE     120
+#define FONT_SIZE     20
 
 #include "core.h"
 #include "../include/raylib.h"
@@ -11,6 +11,7 @@ static int16_t frame_pen_x = 0;
 static int16_t frame_pen_y = 0;
 
 void DISPLAY_init(){
+	SetTraceLogLevel(LOG_ERROR);
 	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Display Device");
 	SetTargetFPS(30);
 	ClearBackground(BLACK);
@@ -55,11 +56,10 @@ void DISPLAY_get_frame_pen(int16_t *x, int16_t *y){
 }
 
 void DISPLAY_get_chr_size(float *chr_width, float *chr_height){
-	*chr_width  = (float)(FONT_SIZE/2.0f);
-	*chr_height = (float)(FONT_SIZE/2.0f);
+	*chr_width  = (float)(FONT_SIZE/1.5f);
+	*chr_height = (float)(FONT_SIZE);
 }
 
 void DISPLAY_generate_char(char chr, int16_t x, int16_t y){
-	const char c[2] = {chr, 0};
-	DrawText(c, x, y, FONT_SIZE/2, GREEN);
+	DrawText(TextFormat("%.1s", &chr), x, y, FONT_SIZE, GREEN);
 }
